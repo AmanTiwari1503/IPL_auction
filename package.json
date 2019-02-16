@@ -1,0 +1,20 @@
+{
+  "name": "tryst_auction",
+  "version": "1.0.0",
+  "description": "Tryst auction event website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmanTiwari1503/tryst_auction.git"
+  },
+  "author": "Aman Tiwari",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/AmanTiwari1503/tryst_auction/issues"
+  },
+  "homepage": "https://github.com/AmanTiwari1503/tryst_auction#readme"
+}
