@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Tryst Auction Admin</title>
+        <!-- Latest compiled and minified CSS -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" >
+        <!-- Optional theme -->
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <link rel="stylesheet" href="/css/admin/portal/form.css" >
+        <script src="form.js"></script>
+    </head>
+    <body >
+        <div class="container">
+            <div class="container form-top">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-danger">
+                            <div class="panel-body">
+                                <form id="reused_form" action="/admin/portal/registerplayer" method="post">
+                                    <div class="form-group">
+                                        <label >Player Name</label>
+                                        <input type="text" name="pname" id="pname" required class="form-control" placeholder="Enter Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Matches Played</label>
+                                        <input type="text" name="matches" id="matches" required class="form-control" placeholder="Enter Number of Matches">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Speciality</label>
+                                        <input type="text" name="speciality" id="speciality" required class="form-control" placeholder="Enter Speciality">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Strike-rate</label>
+                                        <input type="text" name="strikerate" id="strikerate" class="form-control" placeholder="Enter Strike-rate">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Batting average</label>
+                                        <input type="text" name="battingavg" id="battingavg" class="form-control" placeholder="Enter Batting Average">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Bowling average</label>
+                                        <input type="text" name="bowlingavg" id="bowlingavg" class="form-control" placeholder="Enter Bowling Average">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Economy</label>
+                                        <input type="text" name="economy" id="economy" class="form-control" placeholder="Enter Economy">
+                                    </div>
+                                    <div class="form-group"> 
+                                        <button class="btn btn-raised btn-lg btn-warning" type="submit">Register Player</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
