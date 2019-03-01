@@ -8,9 +8,9 @@ var logger = require('morgan');
 var app = require('./ApplicationInstance');
 var _ = require("underscore");
 var mainRoutes = require('./backend/routes/MainRoutes');
-var adminRoutes = require('./backend/routes/AdminRoutes');
-var sessionController = require('./backend/controllers/sessionController');
-var playerController = require('./backend/controllers/playerController');
+// var adminRoutes = require('./backend/routes/AdminRoutes');
+// var sessionController = require('./backend/controllers/sessionController');
+// var playerController = require('./backend/controllers/playerController');
 const cors = require('cors');
 // enable cors
 var corsOption = {
@@ -32,10 +32,7 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
 
-app.post('/admin/login',sessionController.login);
-app.post('/admin/portal/registerplayer',playerController.registerplayer);
-
-app.use('/admin', adminRoutes);
+// app.use('/admin', adminRoutes);
 app.use('/', mainRoutes);
 app.listen(app.get('port'),function(){
     console.log("Started listening on port", app.get('port'));

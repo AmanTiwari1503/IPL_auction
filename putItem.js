@@ -1,9 +1,13 @@
 var AWS = require("aws-sdk");
-const utils = require('./utils');
-const jwt = require('jsonwebtoken');
+AWS.config.update({
+  accessKeyId: "AKIAIWEFDSW73LWVHX5A",
+  secretAccessKey: "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",
+  region: "ap-south-1",
+  endpoint: new AWS.Endpoint('https://dynamodb.ap-south-1.amazonaws.com')
+});
 // Db info
 const teamName = 'Tryst_team'
-const dynamoDB = utils.connectToDB(); 
+const dynamoDB = new AWS.DynamoDB.DocumentClient();
 
 var params = {
     TableName: teamName,

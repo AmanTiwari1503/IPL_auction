@@ -4,8 +4,6 @@ html
   height:100%;  
 }
 body{    
-  background:url('images/jurassic-coast-1406284_1920.jpg') no-repeat;
-  background-size: cover;
   height:100%;
   width:100%;
 
@@ -26,4 +24,22 @@ body{
     }
 }
 
-
+#exTab2 h3 {
+  color : white;
+  background-color: #428bca;
+  padding : 5px 15px;
+}
+#moneytable{
+  width:1000px;
+  margin-top:50px;
+}
+.stab{
+  margin:auto!important;
+  border-collapse:collapse;
+  border:1px solid black;
+}
+#moneytable .stab td{
+  width:200px;
+  height:50px;
+  text-align: center;
+}

@@ -11,16 +11,33 @@
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" >
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
         <link rel="stylesheet" href="/css/admin/portal/form.css" >
-        <script src="form.js"></script>
     </head>
     <body >
-        <div class="container">
+        
+<div id="exTab2" class="container"> 
+<ul class="nav nav-tabs">
+            <li class="active">
+        <a  href="#1" data-toggle="tab">Add Player</a>
+            </li>
+            <li><a href="#2" data-toggle="tab">Register Teams</a>
+            </li>
+            <li><a href="#3" data-toggle="tab">Show Player Info</a>
+            </li>
+            <li><a href="#4" data-toggle="tab">Player auction</a>
+            </li>
+            <li><a href="#5" data-toggle="tab">Team Remaining Money</a>
+            </li>
+        </ul>
+
+            <div class="tab-content ">
+              <div class="tab-pane active" id="1">
+                        <div class="container">
             <div class="container form-top">
                 <div class="row">
                     <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
                         <div class="panel panel-danger">
                             <div class="panel-body">
-                                <form id="reused_form" action="/admin/portal/registerplayer" method="post">
+                                <form id="reused_form" action="/admin/portal/registerplayer" method="POST">
                                     <div class="form-group">
                                         <label >Player Name</label>
                                         <input type="text" name="pname" id="pname" required class="form-control" placeholder="Enter Name">
@@ -49,6 +66,10 @@
                                         <label >Economy</label>
                                         <input type="text" name="economy" id="economy" class="form-control" placeholder="Enter Economy">
                                     </div>
+                                    <div class="form-group">
+                                        <label >Drive Image Link</label>
+                                        <input type="text" name="imagelink" id="imagelink" class="form-control" placeholder="Enter Link">
+                                    </div>
                                     <div class="form-group"> 
                                         <button class="btn btn-raised btn-lg btn-warning" type="submit">Register Player</button>
                                     </div>
@@ -59,5 +80,205 @@
                 </div>
             </div>
         </div>
-    </body>
+                </div>
+                <div class="tab-pane" id="2">
+          <div class="container">
+            <div class="container form-top">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-danger">
+                            <div class="panel-body">
+                                <form id="reused_form1" action="/admin/portal/registerteam" method="POST">
+                                    <div class="form-group">
+                                        <label >Team Name</label>
+                                        <input type="text" name="tname" id="tname" required class="form-control" placeholder="Enter Team Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Email</label>
+                                        <input type="text" name="email" id="email" required class="form-control" placeholder="Enter email of one member">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Assign Password</label>
+                                        <input type="text" name="psswd" id="psswd" required class="form-control" placeholder="Assign Password to the team">
+                                    </div>
+                                    <div class="form-group"> 
+                                        <button class="btn btn-raised btn-lg btn-warning" type="submit">Register Team</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                </div>
+        <div class="tab-pane" id="3">
+                    <div class="container">
+            <div class="container form-top">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-danger">
+                            <div class="panel-body">
+                                <form id="reused_form2" onSubmit="myPlayer();return false;">
+                                    <div class="form-group">
+                                        <label >Player Name</label>
+                                        <input type="text" name="name1" id="name1" required class="form-control" placeholder="Enter Player Name">
+                                    </div>
+                                    <div class="form-group"> 
+                                        <button class="btn btn-raised btn-lg btn-warning" type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section id="hello">
+            </section>
+        </div>
+                </div>
+                <div class="tab-pane" id="4">
+                    <div class="container">
+            <div class="container form-top">
+                <div class="row">
+                    <div class="col-md-6 col-md-offset-3 col-sm-12 col-xs-12">
+                        <div class="panel panel-danger">
+                            <div class="panel-body">
+                                <form id="reused_form3" onSubmit="myBetting();return false;">
+                                    <div class="form-group">
+                                        <label >Player Name</label>
+                                        <input type="text" name="name2" id="name2" required class="form-control" placeholder="Enter Player Name">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Team Email</label>
+                                        <input type="email" name="team2" id="team2" required class="form-control" placeholder="Enter Team Email">
+                                    </div>
+                                    <div class="form-group">
+                                        <label >Player's selling Amount</label>
+                                        <input type="text" name="amount" id="amount" required class="form-control" placeholder="Enter Player Amount">
+                                    </div>
+                                    <div class="form-group"> 
+                                        <button class="btn btn-raised btn-lg btn-warning" type="submit">Submit</button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <section id="hello">
+            </section>
+        </div>
+                </div>
+                <div class="tab-pane" id="5">
+                    <div class="container" id="moneytable">
+                    </div>
+                    </div>
+                </div>
+            </div>
+  </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+    <script>
+        function myPlayer(){
+            var formdata = {};
+      $.each($('#reused_form2').serializeArray(), function(_, kv) {
+        formdata[kv.name] = kv.value;
+      });
+      $.post("/admin/portal/findPlayer",formdata)
+      .done((data,status)=>{
+            /*localStorage.setItem('USER',JSON.stringify(data.user));
+            localStorage.setItem('TRYST', data.token);*/
+            //console.log(status);
+            if(data.error)
+              alert(data.message);
+            else{
+              //console.log("revert");
+              console.log(data);
+              // window.location.href = "/admin/portal";
+            }
+      }).fail((jqXHR, textStatus, errorThrown)=>{
+        alert(jqXHR.responseJSON.message);
+      })
+        }
+    </script>
+    <script type="text/javascript">
+        function myBetting(){
+            var formdata = {};
+            $.each($('#reused_form3').serializeArray(), function(_, kv) {
+                formdata[kv.name] = kv.value;
+            });
+            console.log(formdata);
+            $.post("/admin/portal/betting",formdata)
+            .done((data,status)=>{
+                window.location.href="/admin/portal";
+            }).fail((jqXHR, textStatus, errorThrown)=>{
+                alert(jqXHR.responseJSON.message);
+                console.log(errorThrown);
+            })
+        }
+    </script>
+    <script>
+    window.onload = function(){
+      check();
+    }
+</script>
+<script>
+function check(){
+  var token = getToken();
+  if(token == null)
+  {
+    console.log("Token was null");
+    window.location.href="/admin";
+  }
+  else
+  {
+    $.post("/login",{"token":token})
+    .done(function(data,status){
+
+    }).fail(function(a,b,c){
+      console.log(a);
+      localStorage.removeItem('TRYST');
+      window.location.href="/admin";
+    })
+  }
+}
+</script>
+<script>
+function getToken() {
+  const token = localStorage.getItem('TRYST');
+  if (typeof(token) === "undefined" || !token || token === '')
+    return null;
+  return token;
+}
+</script>
+<script>
+    window.onload = function(){
+        var t= document.getElementById("moneytable");
+        $.post("/admin/portal/getAllTeams")
+        .done((data,status)=>{
+            console.log("c1");
+            console.log(data);
+            var num = Object.keys(data.user).length;
+            var myTable = "<table class='stab' border='1'>";
+            myTable+="<tr><td>Team</td><td>Money Remaining</td></tr>";
+            for(var i=0;i<num;i++)
+            {
+                myTable+="<tr>";
+                var h = Object.keys(data.user[i]);
+                var g = Object.keys(data.user[i]).length;
+                for(var j=0;j<g;j++)
+                    myTable+="<td>"+data.user[i][h[j]]+"</td>";
+                myTable+="</tr>";
+            }
+            myTable+="</table>";
+            t.innerHTML+=myTable;
+        }).fail((jqXHR,textStatus,errorThrown)=>{
+            alert(jqXHR.responseJSON.message);
+        })
+    }
+</script>
+
+      </body>
 </html>

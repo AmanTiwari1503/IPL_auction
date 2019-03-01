@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1 user-scalable=no">
+<!-- <link rel="icon" href="../../assets/images/rdv-bruh.png" type="image/png"> -->
+<!-- <link rel="shortcut icon" href="../../assets/images/rdv-bro.ico" type="img/x-icon"> -->
+<title>User Portal</title>
+<!-- <script type="text/javascript" src="/scripts/checkAndOut.js"></script> -->
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+</head>
+<body>
+	<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <b><a class="navbar-brand" href="/userportal" style="padding-bottom: 15px;">Tryst IPL Auction</a></b>
+  <div class="collapse navbar-collapse" id="navbarNav1" style="position:relative;left:100px;">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <h5 class="nav-link">Welcome, <span id="teamname"></span></h5>
+      </li>
+    </ul>
+  </div>
+  <div class="collapse navbar-collapse" id="navbarNav" style="position:absolute;right:50px;">
+    <ul class="navbar-nav">
+      <li class="nav-item active">
+        <h5 class="nav-link">Money Remaining = <span id="moneyrem"></span></h5>
+      </li>
+    </ul>
+  </div>
+</nav>
+<div class="container">
+<div class="row">
+	<div class="col-xl-6">
+		<h1 style="text-decoration:underline;">Your team</h1>
+		<section id="yteam">
+		</section>
+	</div>
+	<div class="col-xl-6">
+	</div>
+</div>
+</div>
+<!-- <script src="/scripts/userportal/checkAndOut" type="text/javascript"></script> -->
+<script
+  src="https://code.jquery.com/jquery-3.3.1.min.js"
+  integrity="sha256-FgpCb/KJQlLNfOu91ta32o/NMZxltwRo8QtmkMRdAu8="
+  crossorigin="anonymous"></script>
+ <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
+<script>
+		window.onload = function(){
+			check();
+			var a = document.getElementById('teamname');
+			var c = document.getElementById('moneyrem');
+			var b = JSON.parse(localStorage.getItem('USERPORTAL'));
+			a.innerHTML = b[0].tname;
+			const infor = localStorage.getItem("USERPORTAL")
+			var yu = document.getElementById("yteam");
+			$.post("/userportal/findMyPlayers",{"infor":infor})
+			.done((data,status)=>{
+				console.log(data);
+				c.innerHTML = data.ab + " crores";
+				var arr = data.user;
+				var num = arr.length;
+				var myTable = "<table class='stab'>";
+            	for(var i=0;i<num;i++)
+            	{
+                	myTable+="<tr>";
+                	myTable +="<td><h3>"+arr[i]+"</h3></td>";
+                	myTable+="</tr>";
+            	}
+            myTable+="</table>";
+            yu.innerHTML+=myTable;
+			}).fail((jqXHR, textStatus,errorThrown)=>{
+				alert(jqXHR.responseJSON.message);
+			})
+		}
+</script>
+<script>
+function check(){
+	var token = getToken();
+	if(token == null)
+	{
+		console.log("Token was null");
+		window.location.href="/";
+	}
+	else
+	{
+		$.post("/login",{"token":token})
+		.done(function(data,status){
+
+		}).fail(function(a,b,c){
+			console.log(a);
+			localStorage.removeItem('TRYSTAUCTION');
+			window.location.href="/";
+		})
+	}
+}
+</script>
+<script>
+function getToken() {
+	const token = localStorage.getItem('TRYSTAUCTION');
+	if (typeof(token) === "undefined" || !token || token === '')
+		return null;
+	return token;
+}
+</script>
+</body>
+</html>

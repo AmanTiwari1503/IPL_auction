@@ -4,10 +4,10 @@
 const utils = require('../../utils');
 const jwt = require('jsonwebtoken');
 // Db info
-const teamName = 'Tryst_team'
+const teamName = 'Tryst_team';
 const dynamoDB = utils.connectToDB(); 
-var localStorage = require('localStorage');
-//const secret = require('../Models/secrets');
+// var localStorage = require('localStorage');
+const secret = require('../../Models/secret');
 function params(email) {
     return{
     TableName: teamName,
@@ -20,37 +20,122 @@ function params(email) {
 
 // function for session login
 // @review change password sys
-function login(req, res) {
+function login(req,res) {
   const email = req.body.email;
   const password = req.body.password;
+  const token = req.body.token || req.query.token;
+  if(token)
+  {
+      jwt.verify(token, secret.encry, function(err, user){
+        if (err){
+        console.log(err);
+        console.log(token)
+        return utils.error(res, 401, "Invalid Token");
+      }
+      console.log(user);
+      });
+  }
+  else{
   if (!email || !password)
-    return utils.error(res, 401, "Email or Password is wrong");
+    return utils.error(res, 401, "Email or Password is missing");
   dynamoDB.query(params(email), function (err, data) {
     if (err) {
       return utils.error(res, 500, "Internal Server Error");
     } else {
-      if (!data.Items)
+      if (data.Items.length ===0)
         return utils.error(res, 401, "Email does not exist");
       if (data.Items[0].password !== password)
       {
-        console.log(data.Items[0].password);
-        console.log(password);
         return utils.error(res, 401, "Password incorrect");
       }
       delete data.Items[0].password;
       const token = utils.generateToken(data.Items);
       console.log(data.Items);
-      /*return res.json({
+      return res.json({
         user: data.Items,
         token: token,
-      })*/
-      localStorage.setItem('USER',JSON.stringify(data.Items));
-      localStorage.setItem('TRYST', token);
+      })
+      // localStorage.setItem('USER',JSON.stringify(data.Items));
+      // localStorage.setItem('TRYST', token);
       console.log(token);
-      //window.location.href = "/admin/portal";
-      //return res.redirect('/admin/portal');
     }
   })
+}
+}
+
+function params1(email) {
+    return{
+    TableName: "Team_Data",
+    KeyConditionExpression: 'email = :value',
+    ExpressionAttributeValues: { // a map of substitutions for all attribute values
+      ':value': email,
+    }, // a string representing a constraint on the attribute
+  }
+}
+
+function userlogin(req,res) {
+  const email = req.body.email;
+  const password = req.body.password;
+  const token = req.body.token || req.query.token;
+  if(token)
+  {
+      jwt.verify(token, secret.encry, function(err, user){
+        if (err){
+        console.log(err);
+        console.log(token)
+        return utils.error(res, 401, "Invalid Token");
+      }
+      // console.log(user);
+      });
+  }
+  else{
+  if (!email || !password)
+    return utils.error(res, 401, "Email or Password is missing");
+  dynamoDB.query(params1(email), function (err, data) {
+    if (err) {
+      return utils.error(res, 500, "Internal Server Error");
+    } else {
+      if (data.Items.length === 0)
+        return utils.error(res, 401, "Email does not exist");
+      if (data.Items[0].password !== password)
+      {
+        return utils.error(res, 401, "Password incorrect");
+      }
+      delete data.Items[0].password;
+      const token = utils.generateToken(data.Items);
+      console.log(data.Items);
+      return res.json({
+        user: data.Items,
+        token: token,
+      })
+      // localStorage.setItem('USER',JSON.stringify(data.Items));
+      // localStorage.setItem('TRYST', token);
+      // console.log(token);
+    }
+  })
+}
+}
+
+function findMyPlayers(req,res){
+  console.log(req.body.infor);
+  const obj = JSON.parse(req.body.infor);
+  const email = obj[0].email;
+  console.log(email);
+  dynamoDB.query(params1(email),function(err,data){
+    if(err)
+    {
+      console.log(err);
+        return utils.error(res,500,"Internal Server Error");
+    }
+    else
+    {
+        // console.log("Scan suceeded");
+        return res.json({
+            user:data.Items[0].currplayers,
+            ab:data.Items[0].moneyrem,
+        })
+    }
+});
 }
 
 /*function validateToken(req, res) {
@@ -81,5 +166,8 @@ function login(req, res) {
 
 module.exports = {
   login: login,
+  userlogin:userlogin,
+  findMyPlayers:findMyPlayers,
+
   //validateToken: validateToken,
 };

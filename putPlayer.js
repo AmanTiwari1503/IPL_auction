@@ -13,7 +13,7 @@ var fs = require('fs'),
      readline = require('readline');
 
 var rd = readline.createInterface({
-    input: fs.createReadStream('./Book1.csv'),
+    input: fs.createReadStream('./PlayersIndia.csv'),
     output: process.stdout,
     console: false
 });
