@@ -33,7 +33,7 @@ function generateToken(user) {
     email: user.email,
   };
   return token = jwt.sign(u, secret.encry, {
-    expiresIn: 60 * 60 * 24 * 30 // expires in 30 days
+    expiresIn: '1d' // expires in 1 day
   });
 }
 

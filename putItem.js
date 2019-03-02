@@ -13,9 +13,9 @@ var params = {
     TableName: teamName,
     Item: { // a map of attribute name to AttributeValue
     
-        "email":"tiwariaman2000@gmail.com",
-        "password":"asdf",
-        "name":"Aman"
+        "email":"admin.iitd@gmail.com",
+        "password":"adminiitd",
+        "name":"Admin"
         // attribute_value (string | number | boolean | null | Binary | DynamoDBSet | Array | Object)
         // more attributes...
     },

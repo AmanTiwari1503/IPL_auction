@@ -59,7 +59,9 @@ function registerplayer(req,res){
                         "baAvg":battingavg,
                         "boAvg":bowlingavg,
                         "economy":economy,
-                        "imagelink":imagelink
+                        "imagelink":imagelink,
+                        "plowner":[],
+                        "soldin":"-"
                     },
     			};
     			dynamoDB.put(addparams, function(err,data){
@@ -193,31 +195,11 @@ function betting(req,res){
             return utils.error(res, 500, "Internal Server Error");
         else
         {
-            /*console.log(data.Items[0].plowner);
-            if(data.Items[0].plowner !== "")
+            console.log(data.Items[0].plowner);
+            if(data.Items[0].plowner !== "-")
                 return utils.error(res, 400, "Player already sold")
             else
-            {*/
-                var par = {
-                    TableName:teamName,
-                    Key:{
-                        "pname":name2,
-                        "matches":data.Items[0].matches,
-                    },
-                    UpdateExpression:"set plowner = :r",
-                    ExpressionAttributeValues:{
-                        ":r":team2,
-                    },
-                };
-                dynamoDB.update(par,function(err,datan){
-                    if(err)
-                    {
-                        console.log(err);
-                        return utils.error(res,500,"Internal Server Error");
-                    }
-                    else
-                        console.log(datan);
-                });
+            {
                 dynamoDB.query(tparams(team2),function(err,newData){
                     if(err)
                     {
@@ -226,9 +208,37 @@ function betting(req,res){
                     }
                     else
                     {
-                        console.log(name2);
-                        console.log(newData.Items[0].currplayers);
+                        // console.log(name2);
+                        // console.log(newData.Items[0].currplayers);
+                        var par = {
+                            TableName:teamName,
+                            Key:{
+                                "pname":name2,
+                                "matches":data.Items[0].matches,
+                            },
+                            UpdateExpression:"set plowner = :r,soldin = :q",
+                            ExpressionAttributeValues:{
+                                ":r":newData.Items[0].tname,
+                                ":q":amount,
+                            },
+                        };
+                        dynamoDB.update(par,function(err,datan){
+                            if(err)
+                            {
+                                console.log(err);
+                                return utils.error(res,500,"Internal Server Error");
+                            }
+                            else
+                                console.log(datan);
+                        });
                        var amt = parseFloat(newData.Items[0].moneyrem,10) - parseFloat(amount,10);
+                       if(amt<0)
+                       {
+                        var errmes="Cannot buy this player for given amount. Not enough money remaining";
+                        return utils.error(res, 400, errmes);
+                       }
+                       else
+                        {
                         var para = {
                             TableName:regTable,
                             Key:{
@@ -245,18 +255,24 @@ function betting(req,res){
                                 ":x":[name2],
                             }
                         };
-                        dynamoDB.update(para,function(error,datan){
+                        dynamoDB.update(para,function(error,datanew){
                             if(error)
                             {
                                 console.log(error);
                                 return utils.error(res, 500, "Internal Server Error");
                             }
                             else
-                                console.log(datan);
+                            {
+                                console.log(datanew);
+                            }
                          })
                     }
+                    }
                 })
-            //}
+            }
+            return res.json({
+                user1:"Successful",
+            })
         }
     });
 }
@@ -280,11 +296,32 @@ dynamoDB.scan(scanparams,function(err,data){
 });
 }
 
+var scanparams1 = {
+    TableName: teamName,
+    ProjectionExpression:"pname, plowner, soldin",
+}
+
+function findAllPlayersInfo(req,res){
+dynamoDB.scan(scanparams1,function(err,data){
+    if(err)
+        return utils.error(res,500,"Internal Server Error");
+    else
+    {
+        // console.log("Scan suceeded");
+        // console.log(data.Items);
+        return res.json({
+            user:data.Items,
+        })
+    }
+});
+}
+
 module.exports = {
   registerplayer:registerplayer,
   registerteam:registerteam,
   findplayer:findplayer,
   betting:betting,
   getAllTeams:getAllTeams,
+  findAllPlayersInfo:findAllPlayersInfo,
   //validateToken: validateToken,
 };

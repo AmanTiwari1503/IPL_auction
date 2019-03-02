@@ -32,7 +32,9 @@ rd.on('line', function(line) {
             "baAvg":arr[3],
             "boAvg":arr[4],
             "economy":arr[5],
-            "imagelink":arr[7] 
+            "imagelink":arr[7], 
+            "plowner":arr[8],
+            "soldin":arr[9]
         // attribute_value (string | number | boolean | null | Binary | DynamoDBSet | Array | Object)
         // more attributes...
         },

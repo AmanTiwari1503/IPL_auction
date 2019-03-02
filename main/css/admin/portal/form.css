@@ -43,3 +43,20 @@ body{
   height:50px;
   text-align: center;
 }
+
+.atab td{
+  width:200px;
+  padding:10px;
+  text-align:center;
+}
+.stab2 tr:nth-child(even){
+   background-color: #f2f2f2;
+}
+.stab2 td{
+  width:200px;
+  text-align: center;
+}
+#playertable{
+  overflow-y:scroll;
+      height:500px;
+}

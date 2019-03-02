@@ -18,5 +18,8 @@ router.route('/admin/portal/findPlayer').post(playerController.findplayer);
 router.route('/admin/portal/betting').post(playerController.betting);
 router.route('/admin/portal/getAllTeams').post(playerController.getAllTeams);
 router.route('/userportal/findMyPlayers').post(sessionController.findMyPlayers);
+router.route('/userportal/findAllPlayersInfo').post(playerController.findAllPlayersInfo);
+router.route('/admin/validate').post(sessionController.validateToken);
+router.route('/validateUser').post(sessionController.validateUserToken);
 
 module.exports = router;

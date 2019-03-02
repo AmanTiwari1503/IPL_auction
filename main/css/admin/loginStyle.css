@@ -32,11 +32,10 @@ section#formHolder {
 
 .brand {
 	padding: 20px;
-	background: url(https://goo.gl/A0ynht);
 	background-size: cover;
 	background-position: center center;
 	color: #fff;
-	min-height: 910px;
+	min-height: 550px;
 	position: relative;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.3);
 	transition: all 0.6s cubic-bezier(1, -0.375, 0.285, 0.995);
@@ -134,7 +133,7 @@ section#formHolder {
 }
 .form .form-peice {
 	background: #fff;
-	min-height: 840px;
+	min-height: 480px;
 	margin-top: 30px;
 	box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
 	color: #bbbbbb;

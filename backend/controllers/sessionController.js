@@ -17,25 +17,11 @@ function params(email) {
     }, // a string representing a constraint on the attribute
   }
 }
-
 // function for session login
 // @review change password sys
 function login(req,res) {
   const email = req.body.email;
   const password = req.body.password;
-  const token = req.body.token || req.query.token;
-  if(token)
-  {
-      jwt.verify(token, secret.encry, function(err, user){
-        if (err){
-        console.log(err);
-        console.log(token)
-        return utils.error(res, 401, "Invalid Token");
-      }
-      console.log(user);
-      });
-  }
-  else{
   if (!email || !password)
     return utils.error(res, 401, "Email or Password is missing");
   dynamoDB.query(params(email), function (err, data) {
@@ -57,11 +43,44 @@ function login(req,res) {
       })
       // localStorage.setItem('USER',JSON.stringify(data.Items));
       // localStorage.setItem('TRYST', token);
-      console.log(token);
+      // console.log(token);
     }
   })
 }
-}
+
+function validateToken(req,res){
+    const token = req.body.token || req.query.token;
+      jwt.verify(token, secret.encry, function(err, decoded){
+        if (err){
+        // console.log(err);
+        // console.log(token)
+        return utils.error(res, 401, "Invalid Token");
+      }
+      else
+      {
+        return res.json({
+          token:token,
+        })
+      }
+      });
+  }
+
+  function validateUserToken(req,res){
+    const token = req.body.token || req.query.token;
+      jwt.verify(token, secret.encry, function(err, decoded){
+        if (err){
+        // console.log(err);
+        // console.log(token)
+        return utils.error(res, 401, "Invalid Token");
+      }
+      else
+      {
+        return res.json({
+          token:token,
+        })
+      }
+      });
+  }
 
 function params1(email) {
     return{
@@ -76,19 +95,6 @@ function params1(email) {
 function userlogin(req,res) {
   const email = req.body.email;
   const password = req.body.password;
-  const token = req.body.token || req.query.token;
-  if(token)
-  {
-      jwt.verify(token, secret.encry, function(err, user){
-        if (err){
-        console.log(err);
-        console.log(token)
-        return utils.error(res, 401, "Invalid Token");
-      }
-      // console.log(user);
-      });
-  }
-  else{
   if (!email || !password)
     return utils.error(res, 401, "Email or Password is missing");
   dynamoDB.query(params1(email), function (err, data) {
@@ -102,6 +108,8 @@ function userlogin(req,res) {
         return utils.error(res, 401, "Password incorrect");
       }
       delete data.Items[0].password;
+      delete data.Items[0].moneyrem;
+      delete data.Items[0].currplayers;
       const token = utils.generateToken(data.Items);
       console.log(data.Items);
       return res.json({
@@ -113,7 +121,6 @@ function userlogin(req,res) {
       // console.log(token);
     }
   })
-}
 }
 
 function findMyPlayers(req,res){
@@ -137,6 +144,7 @@ function findMyPlayers(req,res){
     }
 });
 }
+
 
 /*function validateToken(req, res) {
   const token = req.body.token || req.query.token;
@@ -168,6 +176,6 @@ module.exports = {
   login: login,
   userlogin:userlogin,
   findMyPlayers:findMyPlayers,
-
-  //validateToken: validateToken,
+  validateToken: validateToken,
+  validateUserToken:validateUserToken,
 };

@@ -8,8 +8,29 @@
 <title>User Portal</title>
 <!-- <script type="text/javascript" src="/scripts/checkAndOut.js"></script> -->
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<style>
+#allteam {
+      overflow-y:scroll;
+      height:500px;
+}
+#monrem {
+      overflow-y:scroll;
+      height:500px;
+}
+.stab2 tr:nth-child(even){
+	 background-color: #f2f2f2;
+}
+.stab2 td{
+	width:200px;
+	text-align: center;
+}
+.stab td{
+	width:200px;
+	text-align: center;
+}
+</style>
 </head>
-<body>
+<body style="overflow-x:hidden;">
 	<nav class="navbar navbar-expand-lg navbar-light bg-light">
   <b><a class="navbar-brand" href="/userportal" style="padding-bottom: 15px;">Tryst IPL Auction</a></b>
   <div class="collapse navbar-collapse" id="navbarNav1" style="position:relative;left:100px;">
@@ -27,14 +48,28 @@
     </ul>
   </div>
 </nav>
-<div class="container">
+<div class="fluid-container">
 <div class="row">
-	<div class="col-xl-6">
-		<h1 style="text-decoration:underline;">Your team</h1>
+	<div class="col-xl-3">
+		<h1 style="text-decoration:underline;text-align: center;">Your team</h1>
 		<section id="yteam">
 		</section>
 	</div>
-	<div class="col-xl-6">
+	<div class="col-xl-5">
+		<h1 style="text-decoration:underline;text-align: center">All Player Info</h1>
+		<table class="stab2">
+		<tr><td><h4>Player</h4></td><td><h4>Owner</h4></td><td><h4>Sold In</h4></td></tr>
+		</table>
+		<section id="allteam">
+		</section>
+	</div>
+	<div class="col-xl-4">
+		<h1 style="text-decoration:underline;text-align: center">Team Info</h1>
+		<table class="stab2">
+		<tr><td><h4>Team</h4></td><td><h4>Money Remaining</h4></td></tr>
+		</table>
+		<section id="monrem">
+		</section>
 	</div>
 </div>
 </div>
@@ -47,6 +82,8 @@
 <script>
 		window.onload = function(){
 			check();
+			findAllPlayersInfo();
+			findAllTeamInfo();
 			var a = document.getElementById('teamname');
 			var c = document.getElementById('moneyrem');
 			var b = JSON.parse(localStorage.getItem('USERPORTAL'));
@@ -55,11 +92,11 @@
 			var yu = document.getElementById("yteam");
 			$.post("/userportal/findMyPlayers",{"infor":infor})
 			.done((data,status)=>{
-				console.log(data);
+				// console.log(data);
 				c.innerHTML = data.ab + " crores";
 				var arr = data.user;
 				var num = arr.length;
-				var myTable = "<table class='stab'>";
+				var myTable = "<table class='stab' style='margin:auto;'>";
             	for(var i=0;i<num;i++)
             	{
                 	myTable+="<tr>";
@@ -74,6 +111,55 @@
 		}
 </script>
 <script>
+	function findAllPlayersInfo(){
+		var tu = document.getElementById("allteam");
+		$.post("/userportal/findAllPlayersInfo")
+		.done((data,status)=>{
+			// console.log(data);
+			var arr = data.user;
+			var num = arr.length;
+			var myTable = "<table class='stab2'>";
+            for(var i=0;i<num;i++)
+            {
+            	if(arr[i].plowner === "-")
+            		continue;
+               	myTable+="<tr>";
+               myTable +="<td><h5>"+arr[i].pname+"</h5></td><td><h5>"+arr[i].plowner+"</h5></td><td><h5>"+arr[i].soldin+"</h5></td>";
+               	myTable+="</tr>";
+            }
+            myTable+="</table>";
+            tu.innerHTML+=myTable;
+		}).fail((jqXHR, textStatus, errorThrown)=>{
+			alert(jqXHR.responseJSON.message);
+		})
+	}
+</script>
+<script>
+	function findAllTeamInfo(){
+        var t= document.getElementById("monrem");
+        $.post("/admin/portal/getAllTeams")
+        .done((data,status)=>{
+            // console.log("c1");
+            // console.log(data);
+            var num = Object.keys(data.user).length;
+            var myTable = "<table class='stab2'>";
+            for(var i=0;i<num;i++)
+            {
+                myTable+="<tr>";
+                var h = Object.keys(data.user[i]);
+                var g = Object.keys(data.user[i]).length;
+                for(var j=0;j<g;j++)
+                    myTable+="<td><h5>"+data.user[i][h[j]]+"</h5></td>";
+                myTable+="</tr>";
+            }
+            myTable+="</table>";
+            t.innerHTML+=myTable;
+        }).fail((jqXHR,textStatus,errorThrown)=>{
+            alert(jqXHR.responseJSON.message);
+        })
+    }
+</script>
+<script>
 function check(){
 	var token = getToken();
 	if(token == null)
@@ -83,9 +169,10 @@ function check(){
 	}
 	else
 	{
-		$.post("/login",{"token":token})
+		$.post("/validateUser",{"token":token})
 		.done(function(data,status){
-
+			// console.log(data);
+			localStorage.setItem('TRYSTAUCTION',data.token);
 		}).fail(function(a,b,c){
 			console.log(a);
 			localStorage.removeItem('TRYSTAUCTION');
