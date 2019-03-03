@@ -119,7 +119,7 @@ function registerteam(req,res){
                         "tname":tname,
                         "email":email,
                         "password":psswd,
-                        "moneyrem":"15",
+                        "moneyrem":"10",
                         "currplayers":[],
                     },
                 };
