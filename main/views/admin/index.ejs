@@ -74,6 +74,7 @@ el.style.display = "none";
       var formdata = {};
       $.each($('#loginform').serializeArray(), function(_, kv) {
         formdata[kv.name] = kv.value;
+        console.log(formdata)
       });
       $.post("/admin",formdata)
       .done((data,status)=>{

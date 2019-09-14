@@ -26,6 +26,7 @@ function login(req,res) {
     return utils.error(res, 401, "Email or Password is missing");
   dynamoDB.query(params(email), function (err, data) {
     if (err) {
+      console.log(err);
       return utils.error(res, 500, "Internal Server Error");
     } else {
       if (data.Items.length ===0)
