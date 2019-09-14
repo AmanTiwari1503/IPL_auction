@@ -195,84 +195,89 @@ function betting(req,res){
             return utils.error(res, 500, "Internal Server Error");
         else
         {
-            console.log(data.Items[0].plowner);
-            if(data.Items[0].plowner !== "-")
-                return utils.error(res, 400, "Player already sold")
+            if(data.Items.length === 0)
+                return utils.error(res,400, "No such player exists");
             else
             {
-                dynamoDB.query(tparams(team2),function(err,newData){
-                    if(err)
-                    {
-                        console.log(err);
-                        return utils.error(res,500,"Internal Server Error");
-                    }
-                    else
-                    {
-                        // console.log(name2);
-                        // console.log(newData.Items[0].currplayers);
-                        var par = {
-                            TableName:teamName,
-                            Key:{
-                                "pname":name2,
-                                "matches":data.Items[0].matches,
-                            },
-                            UpdateExpression:"set plowner = :r,soldin = :q",
-                            ExpressionAttributeValues:{
-                                ":r":newData.Items[0].tname,
-                                ":q":amount,
-                            },
-                        };
-                        dynamoDB.update(par,function(err,datan){
-                            if(err)
-                            {
-                                console.log(err);
-                                return utils.error(res,500,"Internal Server Error");
-                            }
-                            else
-                                console.log(datan);
-                        });
-                       var amt = parseFloat(newData.Items[0].moneyrem,10) - parseFloat(amount,10);
-                       if(amt<0)
-                       {
-                        var errmes="Cannot buy this player for given amount. Not enough money remaining";
-                        return utils.error(res, 400, errmes);
-                       }
-                       else
+                console.log(data.Items[0].plowner);
+                if(data.Items[0].plowner !== "-")
+                    return utils.error(res, 400, "Player already sold")
+                else
+                {
+                    dynamoDB.query(tparams(team2),function(err,newData){
+                        if(err)
                         {
-                        var para = {
-                            TableName:regTable,
-                            Key:{
-                                "email":newData.Items[0].email,
-                                "password":newData.Items[0].password,
-                            },
-                            UpdateExpression:"set moneyrem = :r, currplayers = list_append(if_not_exists(#currplayers,:x),:y)",
-                            ExpressionAttributeNames: {
-                                 '#currplayers': 'currplayers',
-                            },
-                            ExpressionAttributeValues:{
-                                ":r":amt.toString(),
-                                ":y":[name2],
-                                ":x":[name2],
-                            }
-                        };
-                        dynamoDB.update(para,function(error,datanew){
-                            if(error)
+                            console.log(err);
+                            return utils.error(res,500,"Internal Server Error");
+                        }
+                        else
+                        {
+                            // console.log(name2);
+                            // console.log(newData.Items[0].currplayers);
+                            var par = {
+                                TableName:teamName,
+                                Key:{
+                                    "pname":name2,
+                                    "matches":data.Items[0].matches,
+                                },
+                                UpdateExpression:"set plowner = :r,soldin = :q",
+                                ExpressionAttributeValues:{
+                                    ":r":newData.Items[0].tname,
+                                    ":q":amount,
+                                },
+                            };
+                            dynamoDB.update(par,function(err,datan){
+                                if(err)
+                                {
+                                    console.log(err);
+                                    return utils.error(res,500,"Internal Server Error");
+                                }
+                                else
+                                    console.log(datan);
+                            });
+                           var amt = Number(newData.Items[0].moneyrem,10) - Number(amount,10);
+                           if(amt<0)
+                           {
+                            var errmes="Cannot buy this player for given amount. Not enough money remaining";
+                            return utils.error(res, 400, errmes);
+                           }
+                           else
                             {
-                                console.log(error);
-                                return utils.error(res, 500, "Internal Server Error");
-                            }
-                            else
-                            {
-                                console.log(datanew);
-                            }
-                         })
-                    }
-                    }
+                            var para = {
+                                TableName:regTable,
+                                Key:{
+                                    "email":newData.Items[0].email,
+                                    "password":newData.Items[0].password,
+                                },
+                                UpdateExpression:"set moneyrem = :r, currplayers = list_append(if_not_exists(#currplayers,:x),:y)",
+                                ExpressionAttributeNames: {
+                                     '#currplayers': 'currplayers',
+                                },
+                                ExpressionAttributeValues:{
+                                    ":r":amt.toString(),
+                                    ":y":[name2],
+                                    ":x":[name2],
+                                }
+                            };
+                            dynamoDB.update(para,function(error,datanew){
+                                if(error)
+                                {
+                                    console.log(error);
+                                    return utils.error(res, 500, "Internal Server Error");
+                                }
+                                else
+                                {
+                                    console.log(datanew);
+                                }
+                             })
+                        }
+                        }
+                    })
+                }
+                return res.json({
+                    user1:"Successful",
                 })
             }
-            return res.json({
-                user1:"Successful",
-            })
         }
     });
 }

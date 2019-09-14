@@ -7,7 +7,7 @@ AWS.config.update({
 });
 var dynamodb = new AWS.DynamoDB();
 var params = {
-    TableName: 'Tryst_team',
+    TableName: 'Team_Data',
     KeySchema: [ // The type of of schema.  Must start with a HASH type, with an optional second RANGE.
         { // Required HASH type attribute
             AttributeName: 'email',
