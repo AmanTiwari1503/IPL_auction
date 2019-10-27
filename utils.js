@@ -5,10 +5,10 @@ const AWS = require('aws-sdk');
 const jwt =require('jsonwebtoken');
 const secret =  require('./Models/secret');
 
-if ((process.env.NODE_ENV === 'production')) {
+if (!(process.env.NODE_ENV === 'production')) {
   AWS.config.update({
-    accessKeyId: "AKIAJ3AVHXVIGWHPFS2Q",
-    secretAccessKey: "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",
+    accessKeyId: "enter_access_key",
+    secretAccessKey: "enter_secret_key",
     region: "ap-south-1",
     endpoint: new AWS.Endpoint('https://dynamodb.ap-south-1.amazonaws.com')
   });
