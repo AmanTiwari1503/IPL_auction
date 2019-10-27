@@ -236,6 +236,11 @@ function betting(req,res){
                                     console.log(datan);
                             });
                            var amt = Number(newData.Items[0].moneyrem,10) - Number(amount,10);
+                           var tmp = amt - parseInt(amt);
+                           if(tmp > 0.9999999)
+                           {
+                             amt = Math.round(amt);
+                           }
                            if(amt<0)
                            {
                             var errmes="Cannot buy this player for given amount. Not enough money remaining";
