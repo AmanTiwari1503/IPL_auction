@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/AmanTiwari1503/tryst_auction#readme",
   "dependencies": {
-    "aws-sdk": "^2.404.0",
+    "aws-sdk": "^2.814.0",
     "cors": "^2.8.5",
     "delay": "^4.1.0",
     "ejs": "^2.6.1",
